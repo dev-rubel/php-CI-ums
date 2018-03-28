@@ -29,7 +29,7 @@
                         <h1 class="main-title float-left">University Management System (UMS)</h1>
                         <ol class="breadcrumb float-right">
                             <li class="breadcrumb-item"><?php echo $_SESSION['user_type'] ?></li>
-                            <li class="breadcrumb-item active"><?php echo $this->db->get_where('ums_'.$_SESSION['user_type'],['id'=>$_SESSION['user_id']])->row()->name; ?></li>
+                            <li class="breadcrumb-item active"><?php echo $this->db->get_where('ums_'.$_SESSION['user_type'],['id'=>$_SESSION['user']['id']])->row()->name; ?></li>
                         </ol>
                         <div class="clearfix"></div>
                     </div>

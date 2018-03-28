@@ -60,22 +60,20 @@ class User extends CI_Controller {
 			$user_type = $this->input->post('user_type');
 
 			//$user_type = 'admin';
-			$type = ['depertment','accountant','librarian'];
+			$type = ['accountant','librarian'];
 			if(in_array($user_type,$type)) {
 				redirect('login');
 			}
 			
-			
+			// pd($_POST);
 			if ($this->user_model->resolve_user_login($username, $password, $user_type)) {
 				
 				$user_id = $this->user_model->get_user_id_from_username($username, $user_type);
 				$user    = $this->user_model->get_user($user_id, $user_type);
-				
 				// set session user datas
-				$_SESSION['user_id']      = $user->id;
-				$_SESSION['username']     = $user->username;
-				$_SESSION['useremail']    = $user->email;
+				$_SESSION['user']      	  = $user[0];
 				$_SESSION['user_type']    = $user_type;
+				
 				
 				// user login ok
 				redirect($user_type);

@@ -14,6 +14,10 @@
                 <li class="submenu">
                     <a class="<?php echo $title=='Depertment'?'active':''; ?>" href="<?php echo base('admin','depertments_page'); ?>"><i class="fa fa-align-justify"></i><span> Depertment Manage </span> </a>
                 </li>
+                </li>
+                <li class="submenu">
+                    <a class="<?php echo $title=='Depertment Account'?'active':''; ?>" href="<?php echo base('admin','depertments_account_page'); ?>"><i class="fa fa-align-justify"></i><span> Dept. Account Manage </span> </a>
+                </li>
                 <li class="submenu">
                     <a class="<?php echo $title=='Subjects'?'active':''; ?>" href="<?php echo base('admin','subjects_page'); ?>"><i class="fa fa-bars"></i><span> Subjects Manage </span> </a>
                 </li>
@@ -47,7 +51,7 @@
                         <h1 class="main-title float-left">University Management System (UMS)</h1>
                         <ol class="breadcrumb float-right">
                             <li class="breadcrumb-item"><?php echo $_SESSION['user_type'] ?></li>
-                            <li class="breadcrumb-item active"><?php echo $this->db->get_where('ums_'.$_SESSION['user_type'],['id'=>$_SESSION['user_id']])->row()->name; ?></li>
+                            <li class="breadcrumb-item active"><?php echo $this->db->get_where('ums_'.$_SESSION['user_type'],['id'=>$_SESSION['user']['id']])->row()->name; ?></li>
                         </ol>
                         <div class="clearfix"></div>
                     </div>

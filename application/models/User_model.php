@@ -93,7 +93,7 @@ class User_model extends CI_Model {
 		
 		$this->db->from('ums_'.$user_type);
 		$this->db->where('id', $user_id);
-		return $this->db->get()->row();
+		return $this->db->get()->result_array();
 		
 	}
 	

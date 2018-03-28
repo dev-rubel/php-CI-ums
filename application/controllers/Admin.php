@@ -61,8 +61,8 @@ class Admin extends CI_Controller {
 		$crud->edit_fields('username','name','email','password','avatar','updated_at');
 
 		$crud->set_rules('name','Name','required');
-		$crud->set_rules('email','Email','required|valid_email');
-		$crud->set_rules('username','Username','required|min_length[5]');
+		$crud->set_rules('email','Email','required|valid_email|is_unique[ums_admin.email]');
+		$crud->set_rules('username','Username','required|min_length[5]|is_unique[ums_admin.username]');
 		$crud->set_rules('password','Password','min_length[5]|max_length[10]');
 		$crud->set_rules('created_at','Created At','required');
 		$crud->set_rules('updated_at','Updated At','required');
@@ -102,7 +102,7 @@ class Admin extends CI_Controller {
 		$crud->add_fields('name','created_at');
 		$crud->edit_fields('name','updated_at');
 
-		$crud->set_rules('name','Name','required|min_length[3]');
+		$crud->set_rules('name','Name','required|min_length[3]|is_unique[ums_dept_list.name]');
 		$crud->set_rules('created_at','Created At','required');
 		$crud->set_rules('updated_at','Updated At','required');
 		
@@ -113,6 +113,83 @@ class Admin extends CI_Controller {
 		
 		$this->loadview('Depertment', 'depertment', $output);
 		
+	}
+
+	/**
+	* depertments_page function
+	*
+	* @access public
+	* @return void
+	*/
+	
+	public function depertments_account_page() 
+	{
+		$crud = new grocery_CRUD();
+
+		//$crud->set_theme('datatables');
+		$crud->set_table('ums_depertment')
+				->set_subject('Depertment Account')
+				->columns('name','dept_id','username','email','created_at');
+
+		$crud->edit_fields('id','dept_id','name','username','password','email','updated_at');
+		$crud->display_as('dept_id','Dept.Name');
+
+		$crud->set_relation('dept_id','ums_dept_list','name');
+
+		$crud->unset_add_fields('updated_at');
+		$crud->unset_edit_fields('created_at');
+
+		$crud->set_rules('name','Name','required|min_length[3]');
+		
+		$crud->set_rules('password','Password','min_length[5]|max_length[10]');
+
+		if(isset($_POST['created_at'])) {
+			$crud->set_rules('username','Username','required|min_length[3]|is_unique[ums_depertment.username]');
+			$crud->set_rules('email','Email','required|valid_email|is_unique[ums_depertment.email]');
+		} 
+		//$crud->callback_before_update(array($this,'check_unique'));
+		if(isset($_POST['updated_at'])) {
+			$result = $this->check_unique($_POST['id'],$_POST['email'],'email');
+			if($result == false) {
+				$crud->set_rules('email','Email','required|valid_email|is_unique[ums_depertment.email]');
+			}
+			$result1 = $this->check_unique($_POST['id'],$_POST['username'],'username');
+			if($result1 == false) {
+				$crud->set_rules('username','Username','required|min_length[3]|is_unique[ums_depertment.username]');
+			}
+		}
+		
+		$crud->set_rules('created_at','Created At','required');
+		$crud->set_rules('updated_at','Updated At','required');
+
+		$crud->callback_edit_field('password',array($this,'set_password_input_to_empty'));
+		$crud->callback_add_field('password',array($this,'set_password_input_to_empty'));
+		$crud->callback_before_update(array($this,'encrypt_password_callback_deptAc'));
+
+		
+		$crud->unset_read();
+		$crud->unset_clone();
+
+		$output = $crud->render();
+		
+		$this->loadview('Depertment Account', 'depertment_account', $output);
+		
+	}
+
+	function check_unique($id,$value,$col)
+	{
+		$dbValue = $this->db->get_where('ums_depertment',['id'=>$id])->row()->$col;
+		if($dbValue == $value) {
+			return true;
+		} else {
+			$this->db->where($col,$value);
+			$count = $this->db->get('ums_depertment')->num_rows();
+			if($count > 0) {
+				return false;
+			} else {
+				return true;
+			}			
+		}
 	}
 
 	/**
@@ -142,7 +219,7 @@ class Admin extends CI_Controller {
 		$crud->set_relation('dept_id','ums_dept_list','name');
 		$crud->set_relation('shift_id','ums_shift','name');
 
-		$crud->set_rules('name','Name','required|min_length[3]');
+		$crud->set_rules('name','Name','required|min_length[3]|is_unique[ums_batch.name]');
 		$crud->set_rules('dept_id','Depertment','required');
 		$crud->set_rules('shift_id','Shift','required');
 		$crud->set_rules('status','Status','required');
@@ -184,8 +261,8 @@ class Admin extends CI_Controller {
 		$crud->set_rules('address','Address','required');
 		$crud->set_rules('depertment','Depertment','required');
 		$crud->set_rules('phone','Phone','required');
-		$crud->set_rules('email','Email','required|valid_email');
-		$crud->set_rules('username','Username','required|min_length[5]');
+		$crud->set_rules('email','Email','required|valid_email|is_unique[ums_teacher.email]');
+		$crud->set_rules('username','Username','required|min_length[5]|is_unique[ums_teacher.username]');
 		$crud->set_rules('password','Password','min_length[5]|max_length[10]');
 		$crud->set_rules('created_at','Created At','required');
 		$crud->set_rules('updated_at','Updated At','required');
@@ -242,14 +319,14 @@ class Admin extends CI_Controller {
 		$crud->set_rules('depertment','Depertment','required');
 		$crud->set_rules('status','Status','required');
 		$crud->set_rules('session','Session','required|numeric');
-		$crud->set_rules('registration_no','Reg.No','required|numeric');
+		$crud->set_rules('registration_no','Reg.No','required|numeric|is_unique[ums_student.registration_no]');
 		$crud->set_rules('roll','Roll','required|numeric');
 
 		$crud->set_rules('name','Name','required');
 		$crud->set_rules('address','Address','required');		
 		$crud->set_rules('phone','Phone','required');
-		$crud->set_rules('email','Email','required|valid_email');
-		$crud->set_rules('username','Username','required|min_length[5]');
+		$crud->set_rules('email','Email','required|valid_email|is_unique[ums_student.email]');
+		$crud->set_rules('username','Username','required|min_length[5]|is_unique[ums_student.username]');
 		$crud->set_rules('password','Password','min_length[5]|max_length[10]');
 		$crud->set_rules('created_at','Created At','required');
 		$crud->set_rules('updated_at','Updated At','required');
@@ -301,7 +378,7 @@ class Admin extends CI_Controller {
 		$crud->set_rules('dept_id','Depertment','required');
 
 		$crud->set_rules('name','Name','required');
-		$crud->set_rules('subject_code','Subject Code','required');	
+		$crud->set_rules('subject_code','Subject Code','required|is_unique[ums_subject.subject_code]');	
 		$crud->set_rules('created_at','Created At','required');
 		$crud->set_rules('updated_at','Updated At','required');
 
@@ -359,6 +436,20 @@ class Admin extends CI_Controller {
 			}			
 		} else {
 			$post_array['password'] = $this->db->get_where('ums_admin',['id'=>$post_array['id']])->row()->password;
+		}	 
+		return $post_array;
+	}
+
+	function encrypt_password_callback_deptAc($post_array, $primary_key) 
+	{
+		//Encrypt password only if is not empty. Else don't change the password to an empty field
+		if(!empty($post_array['password']))
+		{	
+			if(strlen($post_array['password']) <= 10) {
+				$post_array['password'] = password_hash($post_array['password'], PASSWORD_BCRYPT);
+			}			
+		} else {
+			$post_array['password'] = $this->db->get_where('ums_depertment',['id'=>$post_array['id']])->row()->password;
 		}	 
 		return $post_array;
 	}
