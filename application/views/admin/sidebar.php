@@ -27,13 +27,13 @@
                 <li class="submenu">
                     <a class="<?php echo $title=='Admins'?'active':''; ?>" href="<?php echo base('admin','admins_page'); ?>"><i class="fa fa-database"></i><span> Admin Manage </span> </a>
                 </li>
-                <li class="submenu">
+                <!-- <li class="submenu">
                     <a href="#"><i class="fa fa-fw fa-table"></i> <span> Settings </span> <span class="menu-arrow"></span></a>
                     <ul class="list-unstyled">
                         <li><a href="blank.html">Profile Setting</a></li>
                         <li><a href="blank.html">Change Password</a></li>
                     </ul>
-                </li>
+                </li> -->
             </ul>
             <div class="clearfix"></div>
         </div>

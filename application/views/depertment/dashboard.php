@@ -1,5 +1,8 @@
 
 <div class="alert alert-success" role="alert">
+	<h4 class="alert-heading"><?php echo $dept_name; ?> Depertment</h4>
+</div>
+<div class="alert alert-success" role="alert">
 	<h4 class="alert-heading">University Management System (UMS)</h4>
 	<p>
 		University Management System (UMS) is a large database system which can be used to manage, maintain and secure universitys day to day business.

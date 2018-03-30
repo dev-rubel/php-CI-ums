@@ -8,6 +8,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  */
 class Admin_model extends CI_Model {
 
+	protected $table;
 	/**
 	 * __construct function.
 	 * 
@@ -18,7 +19,7 @@ class Admin_model extends CI_Model {
 		
 		parent::__construct();
 		$this->load->database();
-		
+		$this->table = 'ums_admin';
 	}
 	
 	
