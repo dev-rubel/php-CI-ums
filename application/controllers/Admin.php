@@ -180,7 +180,7 @@ class Admin extends CI_Controller {
 		$crud->unset_add_fields('updated_at');
 		$crud->set_relation('dept_id','ums_dept_list','name');
 		$crud->set_relation('shift_id','ums_shift','name');
-		$crud->set_rules('name','Name','required|min_length[3]|is_unique[ums_batch.name]');
+		$crud->set_rules('name','Name','required|min_length[3]');
 		$crud->set_rules('dept_id','Depertment','required');
 		$crud->set_rules('shift_id','Shift','required');
 		$crud->set_rules('created_at','Created At','required');
@@ -204,11 +204,14 @@ class Admin extends CI_Controller {
 		//$crud->set_theme('datatables');
 		$crud->set_table('ums_teacher')
 				->set_subject('Teacher')
-				->columns('name','address','phone','email','dept_id','avatar','status');
-		$crud->edit_fields('id','username','name','address','phone','email','password','avatar','dept_id','status','updated_at');
+				->columns('name','gender','address','phone','email','dept_id','avatar','status');
+		$crud->display_as('dept_id','Depertment');	
+		$crud->edit_fields('id','username','name','gender','address','phone','email','password','avatar','dept_id','status','updated_at');
 		$crud->unset_add_fields('updated_at');
+		$crud->set_relation('gender','ums_gender','name');
 		$crud->set_relation('dept_id','ums_dept_list','name');
 		$crud->set_relation('status','ums_status2','name');
+		$crud->set_rules('gender','Gender','required');
 		$crud->set_rules('name','Name','required');
 		$crud->set_rules('address','Address','required');
 		$crud->set_rules('dept_id','Depertment','required');
@@ -256,19 +259,21 @@ class Admin extends CI_Controller {
 		//$crud->set_theme('datatables');
 		$crud->set_table('ums_student')
 				->set_subject('Student')
-				->columns('shift_id','dept_id','batch_id','semester_id','status','session','registration_no');
+				->columns('shift_id','dept_id','batch_id','semester_id','status','session','registration_no','gender');
 		$crud->display_as('dept_id','Depertment')
 				->display_as('shift_id','Shift')
 				->display_as('batch_id','Batch')
 				->display_as('semester_id','Semester')
 				->display_as('registration_no','Reg.No.');
-		$crud->edit_fields('id','shift_id','dept_id','batch_id','semester_id','status','session','registration_no','roll','name','address','phone','email','username','password','avatar','updated_at');
+		$crud->edit_fields('id','shift_id','dept_id','batch_id','semester_id','status','session','registration_no','roll','name','gender','address','phone','email','username','password','avatar','updated_at');
 		$crud->unset_add_fields('updated_at');
+		$crud->set_relation('gender','ums_gender','name');
 		$crud->set_relation('shift_id','ums_shift','name');
 		$crud->set_relation('dept_id','ums_dept_list','name');
 		$crud->set_relation('batch_id','ums_batch','name');
 		$crud->set_relation('semester_id','ums_semester','name');
 		$crud->set_relation('status','ums_status2','name');
+		$crud->set_rules('gender','Gender','required');
 		$crud->set_rules('shift_id','Shift','required');
 		$crud->set_rules('batch_id','Batch','required');
 		$crud->set_rules('semester_id','Semester','required');

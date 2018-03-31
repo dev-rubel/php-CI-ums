@@ -27,7 +27,9 @@
     <!-- Counter-Up-->
     <script src="<?php echo base_url();?>assets/plugins/waypoints/lib/jquery.waypoints.min.js"></script>
     <script src="<?php echo base_url();?>assets/plugins/counterup/jquery.counterup.min.js"></script>
+    
     <script>
+    
     $(document).ready(function() {
     // counter-up
     $('.counter').counterUp({
