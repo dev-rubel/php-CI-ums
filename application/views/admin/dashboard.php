@@ -20,7 +20,7 @@
 		<div class="card-box noradius noborder bg-warning">
 			<i class="fa fa-university float-right text-white"></i>
 			<h6 class="text-white text-uppercase m-b-20">Students</h6>
-			<h1 class="m-b-20 text-white counter"><?php echo $this->db->get('ums_teacher')->num_rows(); ?></h1>
+			<h1 class="m-b-20 text-white counter"><?php echo $this->db->get('ums_student')->num_rows(); ?></h1>
 			<span class="text-white">|</span>
 		</div>
 	</div>
