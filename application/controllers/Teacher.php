@@ -56,10 +56,13 @@ class Teacher extends CI_Controller {
 		$crud->where('dept_id',$this->depertment);
 		$crud->set_table('ums_teacher')
 				->set_subject('Teacher')
-				->columns('name','address','phone','email','avatar','status');				
+				->columns('name','address','phone','email','status');				
 		$crud->set_relation('status','ums_status2','name');
 		$crud->set_field_upload('avatar','assets/uploads/teacher');
-		$crud->unset_operations();
+		$crud->unset_add();
+		$crud->unset_edit();
+		$crud->unset_delete();
+		$crud->unset_clone();
 		$output = $crud->render();
 		$this->loadview('Teachers', 'teachers', $output);
 	}
@@ -117,7 +120,10 @@ class Teacher extends CI_Controller {
 		$crud->set_relation('dept_id','ums_dept_list','name',['id'=>$this->depertment]);		
 		$crud->set_relation('status','ums_status2','name');		
 		$crud->set_field_upload('file','assets/uploads/files');
-		$crud->unset_operations();
+		$crud->unset_add();
+		$crud->unset_edit();
+		$crud->unset_delete();
+		$crud->unset_clone();
 		$output = $crud->render();
 		$this->loadview('Notices', 'notices', $output);
 	}
@@ -225,9 +231,10 @@ class Teacher extends CI_Controller {
 		$crud->set_rules('title','Title','required');
 		$crud->set_rules('description','Description','required');
 		$crud->set_rules('created_at','Created At','required');
+		$crud->unset_add();
 		$crud->unset_edit();
-		$crud->unset_clone();
 		$crud->unset_delete();
+		$crud->unset_clone();
 		$output = $crud->render();
 		$this->loadview('Report', 'report', $output);
 	}

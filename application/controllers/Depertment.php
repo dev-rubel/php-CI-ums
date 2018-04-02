@@ -56,7 +56,7 @@ class Depertment extends CI_Controller {
 		$crud->where('dept_id',$this->depertment);
 		$crud->set_table('ums_teacher')
 				->set_subject('Teacher')
-				->columns('name','gender','address','phone','email','dept_id','avatar','status');
+				->columns('name','gender','address','phone','email','dept_id','status');
 		$crud->display_as('dept_id','Depertment');	
 		$crud->edit_fields('id','name','gender','address','phone','email','avatar','status','updated_at');
 		$crud->unset_add_fields('updated_at');

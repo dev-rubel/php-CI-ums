@@ -79,7 +79,6 @@ class Admin extends CI_Controller {
  		$crud->callback_edit_field('password',array($this,'set_password_input_to_empty'));		
 		$crud->callback_before_update(array($this,'encrypt_password_callback_admin'));
 		$crud->set_field_upload('avatar','assets/uploads/admin');
-		$crud->unset_read();
 		$crud->unset_clone();
 		$output = $crud->render();		
 		$this->loadview('Admins', 'admin', $output);		
@@ -103,8 +102,7 @@ class Admin extends CI_Controller {
 		$crud->unset_add_fields('updated_at');
 		$crud->set_rules('name','Name','required|min_length[3]|is_unique[ums_dept_list.name]');
 		$crud->set_rules('created_at','Created At','required');
-		$crud->set_rules('updated_at','Updated At','required');		
-		$crud->unset_read();
+		$crud->set_rules('updated_at','Updated At','required');
 		$crud->unset_clone();
 		$output = $crud->render();		
 		$this->loadview('Depertment', 'depertment', $output);		
@@ -152,8 +150,7 @@ class Admin extends CI_Controller {
 		$crud->change_field_type('password', 'password');
 		$crud->callback_before_insert(array($this,'callback_password_hash'));
 		$crud->callback_edit_field('password',array($this,'set_password_input_to_empty'));
-		$crud->callback_before_update(array($this,'encrypt_password_callback_deptAc'));		
-		$crud->unset_read();
+		$crud->callback_before_update(array($this,'encrypt_password_callback_deptAc'));	
 		$crud->unset_clone();
 		$output = $crud->render();		
 		$this->loadview('Depertment Account', 'depertment_account', $output);		
@@ -184,8 +181,7 @@ class Admin extends CI_Controller {
 		$crud->set_rules('dept_id','Depertment','required');
 		$crud->set_rules('shift_id','Shift','required');
 		$crud->set_rules('created_at','Created At','required');
-		$crud->set_rules('updated_at','Updated At','required');		
-		$crud->unset_read();
+		$crud->set_rules('updated_at','Updated At','required');	
 		$crud->unset_clone();
 		$output = $crud->render();		
 		$this->loadview('Batch', 'batch', $output);		
@@ -204,7 +200,7 @@ class Admin extends CI_Controller {
 		//$crud->set_theme('datatables');
 		$crud->set_table('ums_teacher')
 				->set_subject('Teacher')
-				->columns('name','gender','address','phone','email','dept_id','avatar','status');
+				->columns('name','gender','address','phone','email','dept_id','status');
 		$crud->display_as('dept_id','Depertment');	
 		$crud->edit_fields('id','username','name','gender','address','phone','email','password','avatar','dept_id','status','updated_at');
 		$crud->unset_add_fields('updated_at');
@@ -240,7 +236,6 @@ class Admin extends CI_Controller {
  		$crud->callback_edit_field('password',array($this,'set_password_input_to_empty'));
 		$crud->callback_before_update(array($this,'encrypt_password_callback_teacher'));
 		$crud->set_field_upload('avatar','assets/uploads/teacher');
-		$crud->unset_read();
 		$crud->unset_clone();
 		$output = $crud->render();
 		$this->loadview('Teachers', 'teachers', $output);
@@ -312,7 +307,6 @@ class Admin extends CI_Controller {
  		$crud->callback_edit_field('password',array($this,'set_password_input_to_empty'));
 		$crud->callback_before_update(array($this,'encrypt_password_callback_student'));
 		$crud->set_field_upload('avatar','assets/uploads/student');
-		$crud->unset_read();
 		$crud->unset_clone();
 		$output = $crud->render();
 		$this->loadview('Students', 'students', $output);
@@ -358,7 +352,6 @@ class Admin extends CI_Controller {
 				$crud->set_rules('subject_code','Subject Code','required|is_unique[ums_subject.subject_code]');	
 			}	
 		}		
-		$crud->unset_read();
 		$crud->unset_clone();
 		$output = $crud->render();
 		$this->loadview('Subjects', 'subjects', $output);
