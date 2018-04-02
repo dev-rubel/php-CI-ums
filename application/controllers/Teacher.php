@@ -123,6 +123,87 @@ class Teacher extends CI_Controller {
 	}
 
 	/**
+	 * student_attendance function
+	 *
+	 * @access public
+	 * @return void 
+	 */
+
+	public function student_attendance()
+	{
+		// pd($_POST);
+		
+		$today = date('Y-m-d');
+		$datas = $this->input->post('std_id');
+		$status = $this->input->post('status');
+		$subject_id = $this->input->post('subject_id');
+		if(empty($status)) {
+			$status = [];
+		}
+		if(!empty($datas)) {
+			foreach($datas as $k=>$id) {
+				$statusEx = in_array($id,$status);
+				$exist = $this->db->get_where('ums_attendance',['student_id'=>$id,'created_at'=>$today]);
+
+				if($statusEx) { // present
+					
+					if($exist->num_rows() > 0) {
+						$this->db->where('id',$exist->row()->id);
+						$this->db->update('ums_attendance',['status'=>1]);
+					} else {
+						$student = $this->db->get_where('ums_student',['id'=>$id,'status'=>2])->result_array();
+						if(!empty($student)) {
+							foreach($student as $k2=>$each2) {
+								$data['shift_id'] = $each2['shift_id'];
+								$data['dept_id'] = $each2['dept_id'];
+								$data['batch_id'] = $each2['batch_id'];
+								$data['semester_id'] = $each2['semester_id'];
+								$data['subject_id'] = $subject_id;
+								$data['student_id'] = $each2['id'];
+								$data['status'] = 1;
+								$data['created_at'] = $today;
+								$data['updated_at'] = $today;
+								$this->db->insert('ums_attendance',$data);
+							}
+						}
+					}
+
+				} else { // absent
+
+					if($exist->num_rows() > 0) {
+						$this->db->where('id',$exist->row()->id);
+						$this->db->update('ums_attendance',['status'=>0]);
+					} else {
+						$student = $this->db->get_where('ums_student',['id'=>$id,'status'=>2])->result_array();
+						if(!empty($student)) {
+							foreach($student as $k2=>$each2) {
+								$data['shift_id'] = $each2['shift_id'];
+								$data['dept_id'] = $each2['dept_id'];
+								$data['batch_id'] = $each2['batch_id'];
+								$data['semester_id'] = $each2['semester_id'];
+								$data['subject_id'] = $subject_id;
+								$data['student_id'] = $each2['id'];
+								$data['status'] = 0;
+								$data['created_at'] = $today;
+								$data['updated_at'] = $today;
+								$this->db->insert('ums_attendance',$data);
+							}
+						}
+					}
+				}
+
+				
+				
+			}
+
+			echo json_encode(['type'=>true,'msg'=>'success']);
+		} else {
+			echo json_encode(['type'=>false,'msg'=>'error']);
+		}
+		
+	}
+
+	/**
 	 * report function
 	 *
 	 * @access public

@@ -6,7 +6,7 @@
 </div>
 <footer class="footer text-center">
     <span class="text-center">
-        Copyright <a target="_blank" href="#">Dhaka International University</a>
+        Copyright <a target="_blank" href="#">Dhaka International University</a> (beta-0.9.0)
     </span>
 </footer>
 </div>
@@ -31,12 +31,12 @@
     <script>
     
     $(document).ready(function() {
-    // counter-up
-    $('.counter').counterUp({
-    delay: 10,
-    time: 600
-    });
-    });
+        // counter-up
+        $('.counter').counterUp({
+            delay: 10,
+            time: 600
+            });
+        });
     </script>
     <!-- END Java Script for this page -->
     </body>

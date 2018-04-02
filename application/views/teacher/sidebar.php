@@ -18,7 +18,7 @@
                         if(!empty($subjects)):
                         foreach($subjects as $k=>$subject):
                     ?>
-                        <li><a href="<?php echo base('teacher','subject_page').'/'.$subject['batch_id'].'/'.$subject['subject_id']; ?>"><?php $info = $this->db->get_where('ums_subject',['id'=>$subject['id']])->result_array(); echo $info[0]['subject_code'] ?></a></li>
+                        <li><a href="<?php echo base('teacher','subject_page').'/'.$subject['batch_id'].'/'.$subject['subject_id']; ?>"><?php $info = $this->db->get_where('ums_subject',['id'=>$subject['subject_id']])->result_array(); echo $info[0]['subject_code'] ?></a></li>
                     <?php endforeach;else: ?>
                         <li><a href="#">No Subject Found</a></li>
                     <?php endif; ?>
