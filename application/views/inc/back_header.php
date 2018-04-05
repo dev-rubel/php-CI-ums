@@ -22,31 +22,25 @@
     <link href="<?php echo base_url();?>assets/css/style.css" rel="stylesheet" type="text/css" />
 
     <!-- BEGIN CSS for this page -->
-  
-    <!-- END CSS for this page -->
-    <!-- BEGIN Chart -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
-
-    
+    <?php if(!empty($css_files)): foreach($css_files as $file): ?>
+<link type="text/css" rel="stylesheet" href="<?php echo $file; ?>" />
+    <?php endforeach; endif;?>
+<!-- END CSS for this page -->    
+    <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
 
 </head>
 
 <body class="adminbody">
-
     <div id="main">
-
         <!-- top bar navigation -->
         <div class="headerbar">
-
             <!-- LOGO -->
             <div class="headerbar-left">
                 <a href="index.html" class="logo"><img alt="Logo" src="<?php echo base_url();?>assets/images/favicon.png" /> <span>UMS <?php echo $_SESSION['user_type'] ?></span></a>
             </div>
 
             <nav class="navbar-custom">
-
                 <ul class="list-inline float-right mb-0">
-
                     <li class="list-inline-item dropdown notif">
                         <a class="nav-link dropdown-toggle nav-user" data-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
                             <img src="<?php echo base_url();?>assets/images/avatars/admin.png" alt="Profile image" class="avatar-rounded">
@@ -68,7 +62,6 @@
                             </a>
                         </div>
                     </li>
-
                 </ul>
 
                 <ul class="list-inline menu-left mb-0">
@@ -78,8 +71,6 @@
                         </button>
                     </li>
                 </ul>
-
             </nav>
-
         </div>
         <!-- End Navigation -->

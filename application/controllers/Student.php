@@ -65,10 +65,10 @@ class Student extends CI_Controller {
 				->columns('avatar','name','address','email','roll','represnet','registration_no','status');	
 		
 		$crud->callback_column('represnet',array($this,'callback_represent'));
-		$crud->set_relation('status','ums_status2','name');
-		
+		$crud->set_relation('status','ums_status2','name');		
 		$crud->set_field_upload('avatar','assets/uploads/student');
 		$crud->unset_operations();
+		$crud->order_by('roll','asc');
 		$output = $crud->render();
 		$this->loadview('Students', 'students', $output);
 	}
@@ -222,11 +222,15 @@ class Student extends CI_Controller {
 	 */
 	
 	public function loadview($pageTitle,$pageName,$pageData = '')
-	{
-		$title['title'] = $pageTitle;
-		$data['header']  = $this->load->view('inc/back_header',$title,true);
+	{	
+		if(is_object($pageData)) {
+			$pageData->title = $pageTitle;
+		} else {
+			$pageData['title'] = $pageTitle;
+		}		
+		$data['header']  = $this->load->view('inc/back_header',$pageData,true);
 		$data['sidebar'] = $this->load->view($this->user_type.'/'.'sidebar','',true);
-		$data['footer']  = $this->load->view('inc/back_footer','',true);
+		$data['footer']  = $this->load->view('inc/back_footer',$pageData,true);
 		$data['content'] = $this->load->view($this->user_type.'/'.$pageName,$pageData,true);
 		$this->load->view('back_master',$data);
 	}

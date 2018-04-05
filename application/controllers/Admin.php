@@ -200,10 +200,12 @@ class Admin extends CI_Controller {
 		//$crud->set_theme('datatables');
 		$crud->set_table('ums_teacher')
 				->set_subject('Teacher')
-				->columns('name','gender','address','phone','email','dept_id','status');
-		$crud->display_as('dept_id','Depertment');	
+				->columns('name','gender','address','phone','email','shift_id','dept_id','status');
+		$crud->display_as('dept_id','Depertment')
+				->display_as('shift_id','Shift');	
 		$crud->edit_fields('id','username','name','gender','address','phone','email','password','avatar','dept_id','status','updated_at');
 		$crud->unset_add_fields('updated_at');
+		$crud->set_relation('shift_id','ums_shift','name');
 		$crud->set_relation('gender','ums_gender','name');
 		$crud->set_relation('dept_id','ums_dept_list','name');
 		$crud->set_relation('status','ums_status2','name');
@@ -308,6 +310,7 @@ class Admin extends CI_Controller {
 		$crud->callback_before_update(array($this,'encrypt_password_callback_student'));
 		$crud->set_field_upload('avatar','assets/uploads/student');
 		$crud->unset_clone();
+		
 		$output = $crud->render();
 		$this->loadview('Students', 'students', $output);
 	}
@@ -440,10 +443,14 @@ class Admin extends CI_Controller {
 	
 	public function loadview($pageTitle,$pageName,$pageData = '')
 	{
-		$title['title'] = $pageTitle;
-		$data['header']  = $this->load->view('inc/back_header',$title,true);
+		if(is_object($pageData)) {
+			$pageData->title = $pageTitle;
+		} else {
+			$pageData['title'] = $pageTitle;
+		}
+		$data['header']  = $this->load->view('inc/back_header',$pageData,true);
 		$data['sidebar'] = $this->load->view($this->user_type.'/'.'sidebar','',true);
-		$data['footer']  = $this->load->view('inc/back_footer','',true);
+		$data['footer']  = $this->load->view('inc/back_footer',$pageData,true);
 		$data['content'] = $this->load->view($this->user_type.'/'.$pageName,$pageData,true);
 		$this->load->view('back_master',$data);
 	}

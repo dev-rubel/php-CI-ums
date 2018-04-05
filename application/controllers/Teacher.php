@@ -16,6 +16,7 @@ class Teacher extends CI_Controller {
 	 */
 	private $user_type;
 	private $depertment;
+	private $shift;
 	private $teacher_id;
 	public function __construct() {
 		
@@ -24,8 +25,9 @@ class Teacher extends CI_Controller {
 		if(empty($_SESSION['user_type'])) {			
 			redirect('login');
 		}
-		$this->user_type = $_SESSION['user_type'];
+		$this->user_type  = $_SESSION['user_type'];
 		$this->depertment = $_SESSION['user']['dept_id'];
+		$this->shift 	  = $_SESSION['user']['shift_id'];
 		$this->teacher_id = $_SESSION['user']['id'];
 		$this->load->library('grocery_CRUD');
 	}
@@ -56,8 +58,12 @@ class Teacher extends CI_Controller {
 		$crud->where('dept_id',$this->depertment);
 		$crud->set_table('ums_teacher')
 				->set_subject('Teacher')
-				->columns('name','address','phone','email','status');				
+				->columns('shift_id','name','address','phone','email','status');
+		$crud->display_as('shift_id','Shift');
 		$crud->set_relation('status','ums_status2','name');
+		$crud->set_relation('shift_id','ums_shift','name');
+		$crud->set_relation('dept_id','ums_dept_list','name');
+		$crud->set_relation('gender','ums_gender','name');
 		$crud->set_field_upload('avatar','assets/uploads/teacher');
 		$crud->unset_add();
 		$crud->unset_edit();
@@ -95,6 +101,7 @@ class Teacher extends CI_Controller {
 		$crud->set_rules('created_at','Created At','required');
 		$crud->set_rules('updated_at','Updated At','required');
 		// $crud->set_field_upload('file','assets/uploads/files');
+		$crud->unset_clone();
 		$output = $crud->render();		
 		$this->loadview('Subject Page', 'SubjectPage', $output);		
 	}
@@ -231,12 +238,28 @@ class Teacher extends CI_Controller {
 		$crud->set_rules('title','Title','required');
 		$crud->set_rules('description','Description','required');
 		$crud->set_rules('created_at','Created At','required');
-		$crud->unset_add();
 		$crud->unset_edit();
 		$crud->unset_delete();
 		$crud->unset_clone();
 		$output = $crud->render();
 		$this->loadview('Report', 'report', $output);
+	}
+
+	/**
+	 * student_subject_attendance_report function
+	 *
+	 * @access public
+	 * @return void 
+	 */
+
+	public function student_subject_attendance_report() 
+	{
+		$pageData['shift_id'] = $this->shift;
+		$pageData['dept_id']  = $this->depertment;
+		$pageData['batch_id'] = $this->uri->segment(3);
+		$pageData['subject_id'] = $this->uri->segment(4);
+		$pageData['student_id'] = $this->uri->segment(5);
+		$this->loadview('Student Attendance', 'studentAttendance', $pageData);
 	}
 
 	/**
@@ -250,11 +273,15 @@ class Teacher extends CI_Controller {
 	 */
 	
 	public function loadview($pageTitle,$pageName,$pageData = '')
-	{
-		$title['title'] = $pageTitle;
-		$data['header']  = $this->load->view('inc/back_header',$title,true);
+	{	
+		if(is_object($pageData)) {
+			$pageData->title = $pageTitle;
+		} else {
+			$pageData['title'] = $pageTitle;
+		}		
+		$data['header']  = $this->load->view('inc/back_header',$pageData,true);
 		$data['sidebar'] = $this->load->view($this->user_type.'/'.'sidebar','',true);
-		$data['footer']  = $this->load->view('inc/back_footer','',true);
+		$data['footer']  = $this->load->view('inc/back_footer',$pageData,true);
 		$data['content'] = $this->load->view($this->user_type.'/'.$pageName,$pageData,true);
 		$this->load->view('back_master',$data);
 	}

@@ -1,6 +1,5 @@
 <div class="row">
-
-<div class="offset-md-4 col-md-3">
+<div class="offset-md-4 col-md-4">
 	<div class="card">
 	<?php if(empty($teacher[0]['avatar'])): ?>
 		<img class="card-img-top" src="http://via.placeholder.com/350x150?text=Profile+Image" alt="Card image cap">

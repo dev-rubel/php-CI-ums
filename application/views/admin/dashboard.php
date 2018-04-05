@@ -91,6 +91,8 @@
 	$dataColor = implode(',',$color);
 	$dataLevel = implode(',',$dept_list);
 ?>
+<!-- BEGIN Chart -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
 <script>
 // chartTeacher
 var ctx3 = document.getElementById("chartTeacher").getContext('2d');

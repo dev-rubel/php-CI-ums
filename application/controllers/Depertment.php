@@ -56,11 +56,13 @@ class Depertment extends CI_Controller {
 		$crud->where('dept_id',$this->depertment);
 		$crud->set_table('ums_teacher')
 				->set_subject('Teacher')
-				->columns('name','gender','address','phone','email','dept_id','status');
-		$crud->display_as('dept_id','Depertment');	
+				->columns('name','gender','address','phone','email','shift_id','dept_id','status');
+		$crud->display_as('dept_id','Depertment')
+				->display_as('shift_id','Shift');	
 		$crud->edit_fields('id','name','gender','address','phone','email','avatar','status','updated_at');
 		$crud->unset_add_fields('updated_at');
 		$crud->set_relation('dept_id','ums_dept_list','name', ['id'=>$this->depertment]);
+		$crud->set_relation('shift_id','ums_shift','name');
 		$crud->set_relation('gender','ums_gender','name');
 		$crud->set_relation('status','ums_status2','name');
 		$crud->set_rules('gender','Gender','required');
@@ -269,7 +271,8 @@ class Depertment extends CI_Controller {
 		$crud->set_table('ums_teacher_report')
 				->set_subject('Teacher Report')
 				->columns('teacher_id','title','description','created_at');
-		$crud->display_as('teacher_id','Teacher');			
+		$crud->display_as('teacher_id','Teacher');	
+		$crud->set_relation('dept_id','ums_dept_list','name',['id'=>$this->depertment]);				
 		$crud->set_relation('teacher_id','ums_teacher','name',['id'=>$this->depertment]);	
 		$crud->unset_add();
 		$crud->unset_edit();
@@ -294,6 +297,7 @@ class Depertment extends CI_Controller {
 				->set_subject('Student Report')
 				->columns('student_id','batch','title','description','created_at');
 		$crud->display_as('student_id','Student');		
+		$crud->set_relation('dept_id','ums_dept_list','name',['id'=>$this->depertment]);		
 		$crud->callback_column('batch',array($this,'callback_batch_name'));
 		$crud->set_relation('student_id','ums_student','name');		
 		$crud->unset_add();
@@ -382,11 +386,15 @@ class Depertment extends CI_Controller {
 	 */
 	
 	public function loadview($pageTitle,$pageName,$pageData = '')
-	{
-		$title['title'] = $pageTitle;
-		$data['header']  = $this->load->view('inc/back_header',$title,true);
+	{	
+		if(is_object($pageData)) {
+			$pageData->title = $pageTitle;
+		} else {
+			$pageData['title'] = $pageTitle;
+		}		
+		$data['header']  = $this->load->view('inc/back_header',$pageData,true);
 		$data['sidebar'] = $this->load->view($this->user_type.'/'.'sidebar','',true);
-		$data['footer']  = $this->load->view('inc/back_footer','',true);
+		$data['footer']  = $this->load->view('inc/back_footer',$pageData,true);
 		$data['content'] = $this->load->view($this->user_type.'/'.$pageName,$pageData,true);
 		$this->load->view('back_master',$data);
 	}
